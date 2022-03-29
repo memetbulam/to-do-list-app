@@ -1,8 +1,8 @@
 import React from "react";
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
-import TodoListContextProvider from "./contexts/TodoListContext";
-import UsersContextProvider from "./contexts/UsersContext";
+import TodoListContextProvider from "./store/contexts/TodoListContext";
+import UsersContextProvider from "./store/contexts/UsersContext";
 
 import Login from "./components/Login";
 import TodoList from "./components/todolist/TodoList";

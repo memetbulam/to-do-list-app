@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TodoListContext } from "../../contexts/TodoListContext";
+import { TodoListContext } from "../../store/contexts/TodoListContext";
 import { Table, Button, Form, Container, Row, Col, Modal } from "react-bootstrap";
 import LogOut from "../LogOut";
 

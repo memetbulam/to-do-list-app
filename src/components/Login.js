@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UsersContext } from "../contexts/UsersContext";
+import { UsersContext } from "../store/contexts/UsersContext";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 
 const Login = () => {

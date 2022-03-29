@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { TodoListContext } from "../../contexts/TodoListContext";
+import { TodoListContext } from "../../store/contexts/TodoListContext";
 import { Table, Button, Form, Container, Col, Row } from "react-bootstrap";
 import LogOut from "../LogOut";
 
