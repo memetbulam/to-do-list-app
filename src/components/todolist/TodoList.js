@@ -1,24 +1,34 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TodoListContext } from "../../store/contexts/TodoListContext";
 import { Table, Button, Form, Container, Col, Row } from "react-bootstrap";
-import LogOut from "../LogOut";
+import LogOut from "../login/LogOut";
+import { getSession } from "../../utils/Session";
+import { UsersContext } from "../../store/contexts/UsersContext";
 
 const ToDoList = () => {
     const { todos, todosDispatch } = useContext(TodoListContext);
+    const { users } = useContext(UsersContext);
     const [addTodo, setAddTodo] = useState("");
-    const sessionInfo = JSON.parse(sessionStorage.getItem("sessionInfo"));
-    const userIdControl = todos.filter(todo => todo.userId === sessionInfo[0].id);
+    const loginUserId = getSession();
+    const getLoginUser = users.filter(user => user.id == loginUserId);
 
+    useEffect(() => {
+        if (todos.filterData.length >= 0) {
+            todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
+        }
+    }, [loginUserId]);
     const handleFormSubmit = e => {
-        const sessionId = sessionInfo[0].id;
-        todosDispatch({ type: 'ADD_TODO', userid: sessionId, text: addTodo });
+        todosDispatch({ type: 'ADD_TODO', userid: loginUserId, text: addTodo });
+        todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
         e.preventDefault();
     }
     const handleRemoveTodo = e => {
         const id = e.target.id;
         todosDispatch({ type: 'REMOVE_TODO', id });
+        todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
     }
+
     return (
         <Container className="my-5">
             <LogOut />
@@ -32,31 +42,15 @@ const ToDoList = () => {
                     </thead>
                     <tbody>
                         {
-                            sessionInfo[0].admin ?
-                                todos.map(todo => {
-                                    return <tr key={todo.id}>
-                                        <td>{todo.text}</td>
-                                        <td>
-                                            <Link to={"/TodoList/" + todo.id} className="btn btn-info mx-3" >DÜZENLE</Link>
-                                            <Button type="button" variant="danger" id={todo.id}
-                                                onClick={handleRemoveTodo}>SİL</Button>
-                                        </td>
-                                    </tr>
-                                }) : null
-                        }
-                        {
-                            userIdControl && sessionInfo[0].admin === false ?
-                                userIdControl.map(todo => {
-                                    return <tr key={todo.id}>
-                                        <td> {todo.text}</td>
-                                        <td>
-                                            <Link to={"/TodoList/" + todo.id}
-                                                className="btn btn-info mx-3">DÜZENLE</Link>
-                                            <Button type="button" variant="danger" id={todo.id}
-                                                onClick={handleRemoveTodo}>SİL</Button>
-                                        </td>
-                                    </tr>
-                                }) : null
+                            todos.filterData.map(todo => {
+                                return <tr key={todo.id}>
+                                    <td>{todo.text}</td>
+                                    <td>
+                                        <Link to={"/TodoList/" + todo.id} className="btn btn-info mx-3">DÜZENLE</Link>
+                                        <Button type="button" variant="danger" id={todo.id} onClick={handleRemoveTodo}>SİL</Button>
+                                    </td>
+                                </tr>
+                            })
                         }
                     </tbody>
                 </Table>
