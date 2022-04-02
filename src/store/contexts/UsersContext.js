@@ -4,7 +4,7 @@ import { UserReducer } from "../reducers/UserReducer";
 export const UsersContext = createContext();
 
 const UsersContextProvider = ({ children }) => {
-    const [Users, usersDispatch] = useReducer(UserReducer, [
+    const [users, usersDispatch] = useReducer(UserReducer, [
         { id: 1, admin: false, username: "user", password: "user" },
         { id: 2, admin: true, username: "admin", password: "admin" },
         { id: 3, admin: false, username: "user2", password: "user2" },
@@ -13,7 +13,7 @@ const UsersContextProvider = ({ children }) => {
     ]);
 
     return (
-        <UsersContext.Provider value={{ Users, usersDispatch }}>
+        <UsersContext.Provider value={{ users, usersDispatch }}>
             {children}
         </UsersContext.Provider>
     )
