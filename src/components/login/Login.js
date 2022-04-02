@@ -1,32 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UsersContext } from "../store/contexts/UsersContext";
+import { UsersContext } from "../../store/contexts/UsersContext";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { setSession } from "../../utils/Session";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { Users } = useContext(UsersContext);
+    const [isSuccess, setSuccess] = useState(true);
+    const { users } = useContext(UsersContext);
+
+    function getLoginUser(users, username, password) {
+        return users.filter(user => username === user.username && password === user.password);
+    }
 
     const handleFormSubmit = e => {
         const userName = e.target.elements.userName.value;
         const password = e.target.elements.password.value;
-        const errorLabel = document.getElementById("checkUsersError");
-        const errorUserName = document.getElementById("userName");
-        const errorPassword = document.getElementById("password");
-        const checkUsers = Users.filter(user => userName === user.username && password === user.password);
+        const loginUser = getLoginUser(users, userName, password);
 
-        if (checkUsers.length >= 1) {
-            sessionStorage.setItem("sessionInfo", JSON.stringify(checkUsers));
+        if (loginUser.length >= 1) {
+            setSession(loginUser[0].id);
+            setSuccess(true);
             navigate("/TodoList");
         } else {
-            errorLabel.style.display = "block";
-            errorLabel.style.color = "red";
-            errorUserName.style.border = "1px solid red";
-            errorPassword.style.border = "1px solid red";
+            setSuccess(false);
             setTimeout(() => {
-                errorLabel.style.display = "none";
-                errorUserName.style.border = "1px solid #ced4da";
-                errorPassword.style.border = "1px solid #ced4da";
+                setSuccess(true);
             }, 3000);
         }
         e.preventDefault();
@@ -44,15 +43,17 @@ const Login = () => {
                     <Form className="mx-5 my-5" onSubmit={handleFormSubmit}>
                         <Form.Group className="mb-3" controlId="userName">
                             <Form.Label>Kullanıcı Adı</Form.Label>
-                            <Form.Control type="text" />
+                            <Form.Control type="text" isInvalid={!isSuccess} />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="password">
                             <Form.Label>Şifre</Form.Label>
-                            <Form.Control type="password" />
+                            <Form.Control type="password" isInvalid={!isSuccess} />
                         </Form.Group>
-                        <label className="my-3 text-center" id="checkUsersError" style={{ display: 'none' }}>
-                            KULLANICI ADI VEYA ŞİFRE HATALI</label>
+                        {
+                            isSuccess ? null : <label className="my-3 d-flex justify-content-center text-danger" id="checkUsersError">
+                                KULLANICI ADI VEYA ŞİFRE HATALI</label>
+                        }
                         <Button variant="primary" type="submit" className="w-100">
                             Giriş Yap
                         </Button>
