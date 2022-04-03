@@ -5,6 +5,7 @@ import { Table, Button, Form, Container, Row, Col, Modal } from "react-bootstrap
 import LogOut from "../login/LogOut";
 import { UsersContext } from "../../store/contexts/UsersContext";
 import { getSession } from "../../utils/Session";
+import Popup from "../Popup";
 
 const ToDoListEdit = () => {
     const { todos, todosDispatch } = useContext(TodoListContext);
@@ -30,15 +31,7 @@ const ToDoListEdit = () => {
     return (
         <Container className="my-5">
             <LogOut />
-
-            <Modal show={showModal}>
-                <Modal.Header>
-                    <Modal.Title>BAŞARILI</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Değişiklikler kaydedildi. 3 saniye sonra yapılacaklar
-                    sayfasına yönlendirileceksiniz!</Modal.Body>
-            </Modal>
-
+            <Popup showNodal={showModal} />
             <Row>
                 <Col xs={12}>
                     <Table>
