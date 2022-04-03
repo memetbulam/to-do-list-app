@@ -14,10 +14,9 @@ const ToDoList = () => {
     const getLoginUser = users.filter(user => user.id == loginUserId);
 
     useEffect(() => {
-        if (todos.filterData.length >= 0) {
-            todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
-        }
+        todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
     }, [loginUserId]);
+
     const handleFormSubmit = e => {
         todosDispatch({ type: 'ADD_TODO', userid: loginUserId, text: addTodo });
         todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
