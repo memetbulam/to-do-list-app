@@ -1,0 +1,8 @@
+.all-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    margin: 1.3rem 0 2.5rem 0;
+    text-shadow: 2px 2px rgb(203, 203, 203);
+}
