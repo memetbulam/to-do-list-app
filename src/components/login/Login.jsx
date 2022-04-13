@@ -1,22 +1,14 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { UsersContext } from "../../store/contexts/UsersContext";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import { setSession } from "../../utils/Session";
+import { useState, useNavigate, setSession, useUsersContext, getLoginUser, Form, Button, Container, Row, Col } from './Index';
 
 const Login = () => {
     const navigate = useNavigate();
     const [isSuccess, setSuccess] = useState(true);
-    const { users } = useContext(UsersContext);
-
-    function getLoginUser(users, username, password) {
-        return users.filter(user => username === user.username && password === user.password);
-    }
+    const usersContext = useUsersContext();
 
     const handleFormSubmit = e => {
         const userName = e.target.elements.userName.value;
         const password = e.target.elements.password.value;
-        const loginUser = getLoginUser(users, userName, password);
+        const loginUser = getLoginUser(usersContext.users, userName, password);
 
         if (loginUser.length >= 1) {
             setSession(loginUser[0].id);
@@ -34,7 +26,7 @@ const Login = () => {
         <Container>
             <Row>
                 <Col xs={12}>
-                    <h1 className="d-flex justify-content-center my-5">GİRİŞ YAP</h1>
+                    <h1 className="d-flex justify-content-center mt-5 mb-0 display-4">GİRİŞ YAP</h1>
                 </Col>
             </Row>
             <Row>
