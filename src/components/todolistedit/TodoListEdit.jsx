@@ -1,6 +1,6 @@
 import {
     useState, useNavigate, useParams, getSession, useTodoListContext, useUsersContext,
-    Popup, LogOut, FontAwesomeIcon, Button, Form, Container, InputGroup
+    Popup, LogOut, FontAwesomeIcon, Button, Form, Container, InputGroup, getUserFromSession
 } from './Index';
 
 const ToDoListEdit = () => {
@@ -11,12 +11,12 @@ const ToDoListEdit = () => {
     const navigate = useNavigate();
     const { todoid } = useParams();
     const loginUserId = getSession();
-    const getLoginUser = usersContext.users.filter(user => user.id == loginUserId);
+    const userInSession = getUserFromSession(usersContext.users, loginUserId);
     const todo = todosContext.todos.filterData.filter(todo => todo.id == todoid);
 
     const handleFormSubmit = e => {
         todosContext.todosDispatch({ type: 'EDIT_TODO', id: todoid, editTodo });
-        todosContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: getLoginUser[0].admin });
+        todosContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession[0].admin });
         setShowModal(true);
         setTimeout(() => {
             navigate("/TodoList");
