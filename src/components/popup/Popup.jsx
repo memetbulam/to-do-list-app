@@ -1,5 +1,4 @@
-import React from "react";
-import { Modal } from "react-bootstrap";
+import { Modal } from './Index';
 
 const Popup = (props) => {
     return (
