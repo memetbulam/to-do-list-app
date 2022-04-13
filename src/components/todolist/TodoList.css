@@ -1,0 +1,15 @@
+.btn-outline-danger {
+    background-color: transparent;
+}
+
+.btn-outline-danger:focus {
+    color: #dc3545;
+    background-color: transparent;
+    border-color: #dc3545;
+}
+
+.btn-outline-info:hover {
+    color: #fff;
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
+}
