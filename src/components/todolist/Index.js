@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTodoListContext, useUsersContext } from '../../hooks/useContext';
 import { getSession } from "../../utils/Session";
-import { getUserFromSession } from "../../utils/helpers/UserFromSession";
+import { getUserFromSession } from "../../utils/helpers/GetUserFromSession";
 import LogOut from "../logout/LogOut";
 import './TodoList.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
