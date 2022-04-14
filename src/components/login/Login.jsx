@@ -10,8 +10,8 @@ const Login = () => {
         const password = e.target.elements.password.value;
         const loginUser = getLoginUser(usersContext.users, userName, password);
 
-        if (loginUser.length >= 1) {
-            setSession(loginUser[0].id);
+        if (loginUser !== undefined) {
+            setSession(loginUser.id);
             setSuccess(true);
             navigate("/TodoList");
         } else {
