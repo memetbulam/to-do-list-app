@@ -1,6 +1,6 @@
 import {
     useState, useNavigate, useParams, getSession, useTodoListContext, useUsersContext,
-    Popup, LogOut, FontAwesomeIcon, Button, Form, Container, InputGroup, getUserFromSession
+    Popup, LogOut, FontAwesomeIcon, Button, Form, Container, InputGroup, getUserFromSession, findInTodoFilterData
 } from './Index';
 
 const ToDoListEdit = () => {
@@ -12,7 +12,7 @@ const ToDoListEdit = () => {
     const { todoid } = useParams();
     const loginUserId = getSession();
     const userInSession = getUserFromSession(usersContext.users, loginUserId);
-    const todo = todosContext.todos.filterData.filter(todo => todo.id == todoid);
+    const todo = findInTodoFilterData(todosContext.todos.filterData, todoid);
 
     const handleFormSubmit = e => {
         todosContext.todosDispatch({ type: 'EDIT_TODO', id: todoid, editTodo });
@@ -36,7 +36,7 @@ const ToDoListEdit = () => {
                     <Form onSubmit={handleFormSubmit}>
                         <Form.Group controlId="editTodo">
                             <InputGroup>
-                                <Form.Control type="text" placeholder={todo[0].text} onChange={e => setEditTodo(e.target.value)} />
+                                <Form.Control type="text" placeholder={todo.text} onChange={e => setEditTodo(e.target.value)} />
                                 <Button type="submit" variant="outline-info">
                                     <FontAwesomeIcon icon="fa-solid fa-pen" />
                                 </Button>
