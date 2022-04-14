@@ -16,7 +16,7 @@ const ToDoListEdit = () => {
 
     const handleFormSubmit = e => {
         todosContext.todosDispatch({ type: 'EDIT_TODO', id: todoid, editTodo });
-        todosContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession[0].admin });
+        todosContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession.admin });
         setShowModal(true);
         setTimeout(() => {
             navigate("/TodoList");

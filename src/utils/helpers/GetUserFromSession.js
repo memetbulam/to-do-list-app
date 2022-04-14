@@ -1,3 +1,3 @@
 export const getUserFromSession = (users, loginUserId) => {
-    return users.filter(user => user.id === loginUserId);
+    return users.find(user => user.id === loginUserId);
 }

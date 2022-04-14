@@ -10,19 +10,19 @@ const ToDoList = () => {
     const loginUserId = getSession();
     const userInSession = getUserFromSession(usersContext.users, loginUserId);
     useEffect(() => {
-        todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession[0].admin });
+        todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession.admin });
     }, [loginUserId]);
 
     const handleFormSubmit = e => {
         todoListContext.todosDispatch({ type: 'ADD_TODO', userid: loginUserId, text: addTodo });
-        todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession[0].admin });
+        todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession.admin });
         e.target[0].value = '';
         e.preventDefault();
     }
     const handleRemoveTodo = e => {
         const id = e.target.id;
         todoListContext.todosDispatch({ type: 'REMOVE_TODO', id });
-        todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession[0].admin });
+        todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession.admin });
     }
 
     return (
