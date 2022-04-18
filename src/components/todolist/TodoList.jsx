@@ -1,24 +1,24 @@
 import {
-    useEffect, useState, Link, useTodoListContext, useUsersContext, getSession, getUserFromSession,
-    LogOut, FontAwesomeIcon, Button, Form, Container, ListGroup, InputGroup
+    useEffect, Link, useTodoListContext, useUsersContext, getSession, getUserFromSession,
+    LogOut, FontAwesomeIcon, Formik, addTodoValidationSchema, Button, Form, Container, ListGroup, InputGroup
 } from './Index';
 
 const ToDoList = () => {
     const usersContext = useUsersContext();
     const todoListContext = useTodoListContext();
-    const [addTodo, setAddTodo] = useState("");
     const loginUserId = getSession();
     const userInSession = getUserFromSession(usersContext.users, loginUserId);
+    const addTodoValidation = addTodoValidationSchema();
+
     useEffect(() => {
         todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession.admin });
     }, [loginUserId]);
 
-    const handleFormSubmit = e => {
-        todoListContext.todosDispatch({ type: 'ADD_TODO', userid: loginUserId, text: addTodo });
+    const handleFormSubmit = (values) => {
+        todoListContext.todosDispatch({ type: 'ADD_TODO', userid: loginUserId, text: values.addTodo });
         todoListContext.todosDispatch({ type: 'FILTER_FOR_USER', loginUserId, admin: userInSession.admin });
-        e.target[0].value = '';
-        e.preventDefault();
     }
+
     const handleRemoveTodo = e => {
         const id = e.target.id;
         todoListContext.todosDispatch({ type: 'REMOVE_TODO', id });
@@ -28,14 +28,22 @@ const ToDoList = () => {
     return (
         <Container className="my-1">
             <LogOut />
-            <Form onSubmit={handleFormSubmit} className="mb-3">
-                <Form.Group controlId="newTodo">
-                    <InputGroup>
-                        <Form.Control type="text" placeholder="Yeni Yapılacak Ekle" onChange={e => { setAddTodo(e.target.value) }} />
-                        <Button type="submit" variant="outline-success"><FontAwesomeIcon icon="fa-solid fa-plus" /></Button>
-                    </InputGroup>
-                </Form.Group>
-            </Form>
+            <Formik validationSchema={addTodoValidation} onSubmit={handleFormSubmit} initialValues={{ addTodo: "" }}>
+                {
+                    ({ handleSubmit, handleChange, values, errors }) => (
+                        <Form onSubmit={handleSubmit} className="mb-3">
+                            <Form.Group controlId="validationFormikAddTodo">
+                                <InputGroup>
+                                    <Form.Control type="text" name='addTodo' value={values.addTodo} onChange={handleChange}
+                                        isInvalid={!!errors.addTodo} placeholder="Yeni Yapılacak Ekle" />
+                                    <Button type="submit" variant="outline-success"><FontAwesomeIcon icon="fa-solid fa-plus" /></Button>
+                                    <Form.Control.Feedback tooltip type='invalid'> {errors.addTodo} </Form.Control.Feedback>
+                                </InputGroup>
+                            </Form.Group>
+                        </Form>
+                    )
+                }
+            </Formik>
             <ListGroup as="ol" >
                 {
                     todoListContext.todos.filterData.map(todo => {
@@ -57,4 +65,5 @@ const ToDoList = () => {
         </Container>
     )
 }
+
 export default ToDoList;
