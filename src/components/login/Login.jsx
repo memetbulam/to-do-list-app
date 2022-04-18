@@ -1,27 +1,27 @@
-import { useState, useNavigate, setSession, useUsersContext, getLoginUser, Form, Button, Container, Row, Col } from './Index';
+import {
+    useNavigate, setSession, useUsersContext, getLoginUser, Formik, loginValidationSchema,
+    Form, Button, Container, Row, Col, InputGroup
+} from './Index';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [isSuccess, setSuccess] = useState(true);
     const usersContext = useUsersContext();
+    const validation = loginValidationSchema();
 
-    const handleFormSubmit = e => {
-        const userName = e.target.elements.userName.value;
-        const password = e.target.elements.password.value;
+    const handleFormSubmit = (values, actions) => {
+        const userName = values.userName;
+        const password = values.password;
         const loginUser = getLoginUser(usersContext.users, userName, password);
 
         if (loginUser !== undefined) {
             setSession(loginUser.id);
-            setSuccess(true);
             navigate("/TodoList");
         } else {
-            setSuccess(false);
-            setTimeout(() => {
-                setSuccess(true);
-            }, 3000);
+            actions.setErrors({ ["userName"]: " ", ["password"]: "Kullanıcı Adı veya Şifre Hatalı!" });
+            setTimeout(() => actions.setErrors({ ["userName"]: "", ["password"]: "" }), 2500);
         }
-        e.preventDefault();
     }
+
     return (
         <Container>
             <Row>
@@ -32,24 +32,35 @@ const Login = () => {
             <Row>
                 <Col lg={3} />
                 <Col lg={6}>
-                    <Form className="mx-5 my-5" onSubmit={handleFormSubmit}>
-                        <Form.Group className="mb-3" controlId="userName">
-                            <Form.Label>Kullanıcı Adı</Form.Label>
-                            <Form.Control type="text" isInvalid={!isSuccess} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="password">
-                            <Form.Label>Şifre</Form.Label>
-                            <Form.Control type="password" isInvalid={!isSuccess} />
-                        </Form.Group>
+                    <Formik validationSchema={validation} onSubmit={handleFormSubmit}
+                        initialValues={{ userName: "", password: "" }}>
                         {
-                            isSuccess ? null : <label className="my-3 d-flex justify-content-center text-danger" id="checkUsersError">
-                                KULLANICI ADI VEYA ŞİFRE HATALI</label>
+                            ({ handleSubmit, handleChange, values, errors }) => (
+                                <Form className="mx-5 my-5" noValidate onSubmit={handleSubmit}>
+                                    <Form.Group className="mb-3" controlId="validationFormikUserName">
+                                        <Form.Label>Kullanıcı Adı</Form.Label>
+                                        <InputGroup hasValidation>
+                                            <Form.Control type="text" name='userName' value={values.userName}
+                                                onChange={handleChange} isInvalid={!!errors.userName} />
+                                            <Form.Control.Feedback type='invalid'> {errors.userName} </Form.Control.Feedback>
+                                        </InputGroup>
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="validationFormikPassword">
+                                        <Form.Label>Şifre</Form.Label>
+                                        <InputGroup hasValidation>
+                                            <Form.Control type="password" name='password' value={values.password}
+                                                onChange={handleChange} isInvalid={!!errors.password} />
+                                            <Form.Control.Feedback type='invalid'> {errors.password} </Form.Control.Feedback>
+                                        </InputGroup>
+                                    </Form.Group>
+                                    <Button variant="primary" type="submit" className="w-100">
+                                        GİRİŞ YAP
+                                    </Button>
+                                </Form>
+                            )
                         }
-                        <Button variant="primary" type="submit" className="w-100">
-                            Giriş Yap
-                        </Button>
-                    </Form>
+                    </Formik>
                 </Col>
                 <Col lg={3} />
             </Row>
