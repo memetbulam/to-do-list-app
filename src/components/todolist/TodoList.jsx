@@ -31,7 +31,7 @@ const ToDoList = () => {
             <Formik validationSchema={addTodoValidation} onSubmit={handleFormSubmit} initialValues={{ addTodo: "" }}>
                 {
                     ({ handleSubmit, handleChange, values, errors }) => (
-                        <Form onSubmit={handleSubmit} className="mb-3">
+                        <Form noValidate onSubmit={handleSubmit} className="mb-3">
                             <Form.Group controlId="validationFormikAddTodo">
                                 <InputGroup>
                                     <Form.Control type="text" name='addTodo' value={values.addTodo} onChange={handleChange}
