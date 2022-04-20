@@ -54,7 +54,7 @@ const Login = () => {
                                             <Form.Control.Feedback type='invalid'> {errors.password} </Form.Control.Feedback>
                                         </InputGroup>
                                     </Form.Group>
-                                    <Button variant="primary" type="submit" className="w-100">
+                                    <Button variant="outline-primary" type="submit" className="w-100">
                                         GİRİŞ YAP
                                     </Button>
                                 </Form>
