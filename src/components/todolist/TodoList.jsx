@@ -26,20 +26,18 @@ const ToDoList = () => {
     }
 
     return (
-        <Container className="my-1">
+        <Container className='mt-3'>
             <LogOut />
             <Formik validationSchema={addTodoValidation} onSubmit={handleFormSubmit} initialValues={{ addTodo: "" }}>
                 {
                     ({ handleSubmit, handleChange, values, errors }) => (
                         <Form noValidate onSubmit={handleSubmit} className="mb-3">
-                            <Form.Group controlId="validationFormikAddTodo">
-                                <InputGroup>
-                                    <Form.Control type="text" name='addTodo' value={values.addTodo} onChange={handleChange}
-                                        isInvalid={!!errors.addTodo} placeholder="Yeni Yapılacak Ekle" />
-                                    <Button type="submit" variant="outline-success"><FontAwesomeIcon icon="fa-solid fa-plus" /></Button>
-                                    <Form.Control.Feedback tooltip type='invalid'> {errors.addTodo} </Form.Control.Feedback>
-                                </InputGroup>
-                            </Form.Group>
+                            <InputGroup>
+                                <Form.Control type="text" name='addTodo' id='addTodo' value={values.addTodo} onChange={handleChange}
+                                    isInvalid={!!errors.addTodo} placeholder="Yeni Yapılacak Ekle" />
+                                <Button type="submit" variant="outline-success"><FontAwesomeIcon icon="fa-solid fa-plus" /></Button>
+                                <Form.Control.Feedback tooltip type='invalid'> {errors.addTodo} </Form.Control.Feedback>
+                            </InputGroup>
                         </Form>
                     )
                 }
@@ -50,14 +48,14 @@ const ToDoList = () => {
                         return <ListGroup.Item as="li" key={todo.id} action
                             className="d-flex justify-content-between align-items-center">
                             {todo.text}
-                            <span className="d-inline-flex">
+                            <div className="d-inline-flex">
                                 <Link to={"/TodoList/" + todo.id} className="me-2 btn btn-outline-info">
                                     <FontAwesomeIcon icon="fa-solid fa-pen" />
                                 </Link>
                                 <Button type="button" id={todo.id} onClick={handleRemoveTodo} variant="outline-danger" >
                                     <FontAwesomeIcon icon="fa-solid fa-eraser" style={{ pointerEvents: "none" }} />
                                 </Button>
-                            </span>
+                            </div>
                         </ListGroup.Item>
                     })
                 }
